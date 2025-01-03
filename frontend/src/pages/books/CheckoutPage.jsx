@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { data, Link } from "react-router-dom";
 
 const CheckoutPage = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
@@ -18,7 +18,22 @@ const CheckoutPage = () => {
     formState: { errors },
   } = useForm();
   const [isChecked, setIsChecked] = useState(false);
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = () => {
+    const newOrder = {
+      name: data.name,
+      email: currentUser.email,
+      address: {
+        city: data.city,
+        country: data.country,
+        state: data.state,
+        zipCode: data.zipcode,
+      },
+      phone: data.phone,
+      productIds: cartItems.map((item) => item?._id),
+      totalPrice: totalPrice,
+    };
+    console.log(newOrder);
+  };
 
   return (
     <section>
@@ -209,13 +224,13 @@ const CheckoutPage = () => {
                           className="form-checkbox"
                         />
                         <label htmlFor="billing_same" className="ml-2 ">
-                          I am aggree to the{" "}
+                          I agree with the{" "}
                           <Link className="underline underline-offset-2 text-blue-600">
                             Terms & Conditions
                           </Link>{" "}
                           and{" "}
                           <Link className="underline underline-offset-2 text-blue-600">
-                            Shoping Policy.
+                            Shopping Policy.
                           </Link>
                         </label>
                       </div>
